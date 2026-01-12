@@ -1,6 +1,6 @@
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
 
-async function judgeResults(query, parallelResults, firecrawlResults, exaResults, openaiResults) {
+async function judgeResults(query, parallelResults, firecrawlResults, exaResults) {
   const apiKey = process.env.OPENAI_API_KEY;
   
   if (!apiKey) {
@@ -27,10 +27,6 @@ ${JSON.stringify(firecrawlResults?.results?.slice(0, 5) || [], null, 2)}
 
 **Exa Results:**
 ${JSON.stringify(exaResults?.results?.slice(0, 5) || [], null, 2)}
-
-**OpenAI Web Search Results:**
-${JSON.stringify(openaiResults?.results?.slice(0, 5) || [], null, 2)}
-${openaiResults?.synthesizedAnswer ? `\nSynthesized Answer: ${openaiResults.synthesizedAnswer.substring(0, 500)}...` : ''}
 
 **Evaluation Criteria for App Building Context:**
 1. **Relevance** (0-10): How well do results match what a developer building apps would need?
@@ -59,13 +55,7 @@ Provide your evaluation as JSON:
     "strengths": ["..."],
     "weaknesses": ["..."]
   },
-  "openai": {
-    "scores": { "relevance": X, "freshness": X, "actionability": X, "sourceQuality": X, "coverage": X },
-    "totalScore": X,
-    "strengths": ["..."],
-    "weaknesses": ["..."]
-  },
-  "winner": "parallel" | "firecrawl" | "exa" | "openai" | "tie",
+  "winner": "parallel" | "firecrawl" | "exa" | "tie",
   "recommendation": "Brief recommendation for Lovable.dev based on this query",
   "reasoning": "2-3 sentence explanation of the winner choice"
 }`;

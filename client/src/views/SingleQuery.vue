@@ -101,9 +101,9 @@
         
         <!-- Score Cards -->
         <div class="score-cards">
-          <div v-for="provider in ['parallel', 'firecrawl', 'exa', 'openai']" :key="provider" 
+          <div v-for="provider in ['parallel', 'firecrawl', 'exa']" :key="provider" 
                class="score-card" :class="{ winner: judgment.winner === provider }">
-            <div class="score-provider">{{ provider === 'openai' ? 'OpenAI' : provider }}</div>
+            <div class="score-provider">{{ provider }}</div>
             <div class="score-total">{{ judgment[provider]?.totalScore || 0 }}/50</div>
             <div class="score-breakdown">
               <span>Relevance: {{ judgment[provider]?.scores?.relevance || 0 }}</span>
@@ -164,33 +164,6 @@
           </div>
         </div>
 
-        <!-- OpenAI -->
-        <div class="provider-column openai">
-          <div class="column-header">
-            <h3>OpenAI</h3>
-            <div class="column-meta">
-              <span class="latency" v-if="results.openai?.latency">{{ results.openai.latency }}ms</span>
-              <span class="count">{{ results.openai?.results?.length || 0 }} results</span>
-            </div>
-          </div>
-          <div v-if="results.openai?.error" class="provider-error">
-            {{ results.openai.error }}
-          </div>
-          <div v-else class="results-list">
-            <div v-if="results.openai?.synthesizedAnswer" class="synthesized-answer">
-              <span class="synth-label">AI Summary:</span>
-              <p>{{ truncate(results.openai.synthesizedAnswer, 200) }}</p>
-            </div>
-            <div v-for="(result, idx) in results.openai?.results || []" :key="idx" class="result-card">
-              <div class="result-rank">{{ idx + 1 }}</div>
-              <div class="result-content">
-                <a :href="result.url" target="_blank" class="result-title">{{ truncate(result.title, 60) || result.url }}</a>
-                <p class="result-snippet">{{ truncate(result.snippet, 120) }}</p>
-                <span class="result-url">{{ truncateUrl(result.url) }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
 
         <!-- Exa -->
         <div class="provider-column exa">
@@ -230,11 +203,6 @@
           <div class="empty-icon">🔥</div>
           <h4>Firecrawl</h4>
           <p>Web scraping & search</p>
-        </div>
-        <div class="empty-card openai">
-          <div class="empty-icon">🤖</div>
-          <h4>OpenAI</h4>
-          <p>GPT-4o with web search</p>
         </div>
         <div class="empty-card exa">
           <div class="empty-icon">🔮</div>
@@ -348,8 +316,7 @@ export default {
             query: this.searchedQuery,
             parallelResults: this.results.parallel,
             firecrawlResults: this.results.firecrawl,
-            exaResults: this.results.exa,
-            openaiResults: this.results.openai
+            exaResults: this.results.exa
           })
         })
         if (!res.ok) throw new Error('Judging failed')
@@ -834,7 +801,7 @@ export default {
 /* Results Grid */
 .results-grid.four-columns {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
 

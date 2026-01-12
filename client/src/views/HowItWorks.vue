@@ -138,8 +138,7 @@ export default {
       providers: [
         { id: 'parallel', name: 'Parallel' },
         { id: 'firecrawl', name: 'Firecrawl' },
-        { id: 'exa', name: 'Exa' },
-        { id: 'openai', name: 'OpenAI' }
+        { id: 'exa', name: 'Exa' }
       ],
       providerCode: {
         parallel: {
@@ -244,49 +243,6 @@ async function searchExa(query, numResults = 10) {
     }))
   };
 }`
-        },
-        openai: {
-          file: 'server/services/openai-search.js',
-          code: `const OPENAI_API_URL = 'https://api.openai.com/v1/responses';
-
-async function searchOpenAI(query, numResults = 10) {
-  const response = await fetch(OPENAI_API_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': \`Bearer \${process.env.OPENAI_API_KEY}\`
-    },
-    body: JSON.stringify({
-      model: 'gpt-4o',
-      tools: [{ type: 'web_search_preview' }],
-      input: query
-    })
-  });
-
-  const data = await response.json();
-
-  // Extract URL citations from response
-  const results = [];
-  for (const item of data.output || []) {
-    if (item.content?.annotations) {
-      for (const ann of item.content.annotations) {
-        if (ann.type === 'url_citation') {
-          results.push({
-            title: ann.title || 'Source',
-            url: ann.url,
-            snippet: ''
-          });
-        }
-      }
-    }
-  }
-
-  return {
-    provider: 'openai',
-    results: results.slice(0, numResults),
-    synthesizedAnswer: data.output_text
-  };
-}`
         }
       },
       judgePrompt: `// GPT-4o evaluates ALL providers using identical criteria
@@ -305,9 +261,6 @@ for an AI-powered app builder called Lovable.dev.
 
 **Exa Results:**
 \${JSON.stringify(exaResults?.results?.slice(0, 5))}
-
-**OpenAI Web Search Results:**
-\${JSON.stringify(openaiResults?.results?.slice(0, 5))}
 
 **Evaluation Criteria (0-10 each, same for ALL providers):**
 1. Relevance - Match to developer needs
@@ -335,7 +288,7 @@ based purely on total score.\`;`
     async copyCode(code) {
       try {
         await navigator.clipboard.writeText(code)
-        this.copiedCode = this.activeProvider === 'parallel' || this.activeProvider === 'firecrawl' || this.activeProvider === 'exa' || this.activeProvider === 'openai' 
+        this.copiedCode = this.activeProvider === 'parallel' || this.activeProvider === 'firecrawl' || this.activeProvider === 'exa'
           ? this.activeProvider 
           : 'judge'
         setTimeout(() => { this.copiedCode = null }, 2000)

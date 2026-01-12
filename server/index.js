@@ -9,7 +9,6 @@ const crypto = require('crypto');
 const { searchParallel } = require('./services/parallel');
 const { searchFirecrawl } = require('./services/firecrawl');
 const { searchExa } = require('./services/exa');
-const { searchOpenAI } = require('./services/openai-search');
 const { judgeResults, generateTestSuite } = require('./services/openai');
 
 const app = express();
@@ -44,11 +43,10 @@ app.post('/api/search', async (req, res) => {
     console.log(`[Search] Query: "${query}"`);
 
     // Run all searches in parallel
-    const [parallelResult, firecrawlResult, exaResult, openaiResult] = await Promise.allSettled([
+    const [parallelResult, firecrawlResult, exaResult] = await Promise.allSettled([
       searchParallel(query, numResults),
       searchFirecrawl(query, numResults),
-      searchExa(query, numResults),
-      searchOpenAI(query, numResults)
+      searchExa(query, numResults)
     ]);
 
     const response = {
@@ -56,11 +54,10 @@ app.post('/api/search', async (req, res) => {
       timestamp: new Date().toISOString(),
       parallel: parallelResult.status === 'fulfilled' ? parallelResult.value : { error: parallelResult.reason?.message },
       firecrawl: firecrawlResult.status === 'fulfilled' ? firecrawlResult.value : { error: firecrawlResult.reason?.message },
-      exa: exaResult.status === 'fulfilled' ? exaResult.value : { error: exaResult.reason?.message },
-      openai: openaiResult.status === 'fulfilled' ? openaiResult.value : { error: openaiResult.reason?.message }
+      exa: exaResult.status === 'fulfilled' ? exaResult.value : { error: exaResult.reason?.message }
     };
 
-    console.log(`[Search] Complete - Parallel: ${response.parallel.latency || 'error'}ms, Firecrawl: ${response.firecrawl.latency || 'error'}ms, Exa: ${response.exa.latency || 'error'}ms, OpenAI: ${response.openai.latency || 'error'}ms`);
+    console.log(`[Search] Complete - Parallel: ${response.parallel.latency || 'error'}ms, Firecrawl: ${response.firecrawl.latency || 'error'}ms, Exa: ${response.exa.latency || 'error'}ms`);
 
     res.json(response);
   } catch (err) {
@@ -72,7 +69,7 @@ app.post('/api/search', async (req, res) => {
 // Judge endpoint - compares results using GPT-4o
 app.post('/api/judge', async (req, res) => {
   try {
-    const { query, parallelResults, firecrawlResults, exaResults, openaiResults } = req.body;
+    const { query, parallelResults, firecrawlResults, exaResults } = req.body;
 
     if (!query) {
       return res.status(400).json({ error: 'Query is required' });
@@ -80,7 +77,7 @@ app.post('/api/judge', async (req, res) => {
 
     console.log(`[Judge] Evaluating results for: "${query}"`);
 
-    const judgment = await judgeResults(query, parallelResults, firecrawlResults, exaResults, openaiResults);
+    const judgment = await judgeResults(query, parallelResults, firecrawlResults, exaResults);
 
     console.log(`[Judge] Winner: ${judgment.winner}`);
 
@@ -124,9 +121,8 @@ app.post('/api/test-suite/run', async (req, res) => {
       parallelWins: 0,
       firecrawlWins: 0,
       exaWins: 0,
-      openaiWins: 0,
       ties: 0,
-      avgLatency: { parallel: 0, firecrawl: 0, exa: 0, openai: 0 }
+      avgLatency: { parallel: 0, firecrawl: 0, exa: 0 }
     };
 
     for (let i = 0; i < queries.length; i++) {
@@ -135,18 +131,16 @@ app.post('/api/test-suite/run', async (req, res) => {
 
       try {
         // Search all providers
-        const [parallelResult, firecrawlResult, exaResult, openaiResult] = await Promise.allSettled([
+        const [parallelResult, firecrawlResult, exaResult] = await Promise.allSettled([
           searchParallel(query, 10),
           searchFirecrawl(query, 10),
-          searchExa(query, 10),
-          searchOpenAI(query, 10)
+          searchExa(query, 10)
         ]);
 
         const searchResults = {
           parallel: parallelResult.status === 'fulfilled' ? parallelResult.value : { error: parallelResult.reason?.message },
           firecrawl: firecrawlResult.status === 'fulfilled' ? firecrawlResult.value : { error: firecrawlResult.reason?.message },
-          exa: exaResult.status === 'fulfilled' ? exaResult.value : { error: exaResult.reason?.message },
-          openai: openaiResult.status === 'fulfilled' ? openaiResult.value : { error: openaiResult.reason?.message }
+          exa: exaResult.status === 'fulfilled' ? exaResult.value : { error: exaResult.reason?.message }
         };
 
         // Judge results
@@ -154,21 +148,18 @@ app.post('/api/test-suite/run', async (req, res) => {
           query,
           searchResults.parallel,
           searchResults.firecrawl,
-          searchResults.exa,
-          searchResults.openai
+          searchResults.exa
         );
 
         // Update summary
         if (judgment.winner === 'parallel') summary.parallelWins++;
         else if (judgment.winner === 'firecrawl') summary.firecrawlWins++;
         else if (judgment.winner === 'exa') summary.exaWins++;
-        else if (judgment.winner === 'openai') summary.openaiWins++;
         else summary.ties++;
 
         if (searchResults.parallel?.latency) summary.avgLatency.parallel += searchResults.parallel.latency;
         if (searchResults.firecrawl?.latency) summary.avgLatency.firecrawl += searchResults.firecrawl.latency;
         if (searchResults.exa?.latency) summary.avgLatency.exa += searchResults.exa.latency;
-        if (searchResults.openai?.latency) summary.avgLatency.openai += searchResults.openai.latency;
 
         results.push({
           query,
@@ -188,10 +179,9 @@ app.post('/api/test-suite/run', async (req, res) => {
       summary.avgLatency.parallel = Math.round(summary.avgLatency.parallel / validCount);
       summary.avgLatency.firecrawl = Math.round(summary.avgLatency.firecrawl / validCount);
       summary.avgLatency.exa = Math.round(summary.avgLatency.exa / validCount);
-      summary.avgLatency.openai = Math.round(summary.avgLatency.openai / validCount);
     }
 
-    console.log(`[TestSuite] Complete - Winner counts: Parallel=${summary.parallelWins}, Firecrawl=${summary.firecrawlWins}, Exa=${summary.exaWins}, OpenAI=${summary.openaiWins}`);
+    console.log(`[TestSuite] Complete - Winner counts: Parallel=${summary.parallelWins}, Firecrawl=${summary.firecrawlWins}, Exa=${summary.exaWins}`);
 
     res.json({ type: 'complete', summary, results });
 
@@ -303,5 +293,5 @@ app.get('*', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`🚀 Lovable Search Demo server running on port ${PORT}`);
-  console.log(`   Comparing: Parallel vs Firecrawl vs Exa vs OpenAI`);
+  console.log(`   Comparing: Parallel vs Firecrawl vs Exa`);
 });

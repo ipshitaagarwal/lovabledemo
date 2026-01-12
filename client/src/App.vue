@@ -33,7 +33,7 @@
     </main>
 
     <footer class="footer">
-      <p>Comparing <strong>Parallel</strong> vs <strong>Firecrawl</strong> vs <strong>Exa</strong> vs <strong>OpenAI</strong> for Lovable.dev</p>
+      <p>Comparing <strong>Parallel</strong> vs <strong>Firecrawl</strong> vs <strong>Exa</strong> for Lovable.dev</p>
     </footer>
   </div>
 </template>

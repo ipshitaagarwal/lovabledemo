@@ -89,12 +89,6 @@
             <div class="card-sub">wins</div>
             <div class="card-latency" v-if="results.summary.avgLatency">{{ results.summary.avgLatency.firecrawl }}ms avg</div>
           </div>
-          <div class="summary-card openai" :class="{ winner: isWinner('openai') }">
-            <div class="card-label">OpenAI</div>
-            <div class="card-value">{{ results.summary.openaiWins }}</div>
-            <div class="card-sub">wins</div>
-            <div class="card-latency" v-if="results.summary.avgLatency">{{ results.summary.avgLatency.openai }}ms avg</div>
-          </div>
           <div class="summary-card exa" :class="{ winner: isWinner('exa') }">
             <div class="card-label">Exa</div>
             <div class="card-value">{{ results.summary.exaWins }}</div>
@@ -120,7 +114,6 @@
               <th>Parallel</th>
               <th>Firecrawl</th>
               <th>Exa</th>
-              <th>OpenAI</th>
             </tr>
           </thead>
           <tbody>
@@ -134,7 +127,6 @@
               <td class="col-score">{{ r.judgment?.parallel?.totalScore || '-' }}</td>
               <td class="col-score">{{ r.judgment?.firecrawl?.totalScore || '-' }}</td>
               <td class="col-score">{{ r.judgment?.exa?.totalScore || '-' }}</td>
-              <td class="col-score">{{ r.judgment?.openai?.totalScore || '-' }}</td>
             </tr>
           </tbody>
         </table>
@@ -298,8 +290,7 @@ export default {
       const wins = {
         parallel: s.parallelWins,
         firecrawl: s.firecrawlWins,
-        exa: s.exaWins,
-        openai: s.openaiWins
+        exa: s.exaWins
       }
       const max = Math.max(...Object.values(wins))
       return wins[provider] === max && max > 0
@@ -625,7 +616,7 @@ export default {
 
 .summary-cards {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
 }
 
