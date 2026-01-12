@@ -107,7 +107,7 @@ app.post('/api/test-suite/generate', async (req, res) => {
   }
 });
 
-// Run test suite with SSE for progress
+// Run test suite - returns all results at once
 app.post('/api/test-suite/run', async (req, res) => {
   try {
     const { queries } = req.body;
@@ -116,10 +116,7 @@ app.post('/api/test-suite/run', async (req, res) => {
       return res.status(400).json({ error: 'Queries array is required' });
     }
 
-    // Set up SSE
-    res.setHeader('Content-Type', 'text/event-stream');
-    res.setHeader('Cache-Control', 'no-cache');
-    res.setHeader('Connection', 'keep-alive');
+    console.log(`[TestSuite] Running ${queries.length} queries`);
 
     const results = [];
     const summary = {
@@ -134,9 +131,7 @@ app.post('/api/test-suite/run', async (req, res) => {
 
     for (let i = 0; i < queries.length; i++) {
       const query = queries[i];
-
-      // Send progress
-      res.write(`data: ${JSON.stringify({ type: 'progress', current: i + 1, total: queries.length, query })}\n\n`);
+      console.log(`[TestSuite] Processing ${i + 1}/${queries.length}: "${query}"`);
 
       try {
         // Search all providers
@@ -170,19 +165,16 @@ app.post('/api/test-suite/run', async (req, res) => {
         else if (judgment.winner === 'openai') summary.openaiWins++;
         else summary.ties++;
 
-        if (searchResults.parallel.latency) summary.avgLatency.parallel += searchResults.parallel.latency;
-        if (searchResults.firecrawl.latency) summary.avgLatency.firecrawl += searchResults.firecrawl.latency;
-        if (searchResults.exa.latency) summary.avgLatency.exa += searchResults.exa.latency;
-        if (searchResults.openai.latency) summary.avgLatency.openai += searchResults.openai.latency;
+        if (searchResults.parallel?.latency) summary.avgLatency.parallel += searchResults.parallel.latency;
+        if (searchResults.firecrawl?.latency) summary.avgLatency.firecrawl += searchResults.firecrawl.latency;
+        if (searchResults.exa?.latency) summary.avgLatency.exa += searchResults.exa.latency;
+        if (searchResults.openai?.latency) summary.avgLatency.openai += searchResults.openai.latency;
 
         results.push({
           query,
           searchResults,
           judgment
         });
-
-        // Send result
-        res.write(`data: ${JSON.stringify({ type: 'result', index: i, query, judgment })}\n\n`);
 
       } catch (err) {
         console.error(`[TestSuite] Error for query "${query}":`, err);
@@ -199,14 +191,13 @@ app.post('/api/test-suite/run', async (req, res) => {
       summary.avgLatency.openai = Math.round(summary.avgLatency.openai / validCount);
     }
 
-    // Send final summary
-    res.write(`data: ${JSON.stringify({ type: 'complete', summary, results })}\n\n`);
-    res.end();
+    console.log(`[TestSuite] Complete - Winner counts: Parallel=${summary.parallelWins}, Firecrawl=${summary.firecrawlWins}, Exa=${summary.exaWins}, OpenAI=${summary.openaiWins}`);
+
+    res.json({ type: 'complete', summary, results });
 
   } catch (err) {
     console.error('[TestSuite] Error:', err);
-    res.write(`data: ${JSON.stringify({ type: 'error', message: err.message })}\n\n`);
-    res.end();
+    res.status(500).json({ error: err.message });
   }
 });
 

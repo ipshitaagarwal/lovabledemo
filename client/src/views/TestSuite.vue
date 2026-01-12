@@ -244,28 +244,16 @@ export default {
           body: JSON.stringify({ queries: validQueries })
         })
 
-        const reader = response.body.getReader()
-        const decoder = new TextDecoder()
-
-        while (true) {
-          const { done, value } = await reader.read()
-          if (done) break
-
-          const text = decoder.decode(value)
-          const lines = text.split('\n').filter(l => l.startsWith('data: '))
-
-          for (const line of lines) {
-            const data = JSON.parse(line.slice(6))
-            
-            if (data.type === 'progress') {
-              this.progress = { current: data.current, total: data.total }
-            } else if (data.type === 'complete') {
-              this.results = data
-            }
-          }
+        if (!response.ok) {
+          throw new Error('Test suite failed')
         }
+
+        const data = await response.json()
+        this.results = data
+        this.progress = { current: validQueries.length, total: validQueries.length }
       } catch (err) {
         console.error(err)
+        alert('Test suite failed: ' + err.message)
       } finally {
         this.running = false
       }
