@@ -1,0 +1,16 @@
+{
+  "name": "lovable-search-demo",
+  "version": "1.0.0",
+  "description": "Search API comparison demo for Lovable.dev - Parallel vs Firecrawl vs Perplexity",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "build": "cd client && npm install && npm run build",
+    "dev": "node server/index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0"
+  }
+}
