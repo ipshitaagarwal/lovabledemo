@@ -312,5 +312,5 @@ app.get('*', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`🚀 Lovable Search Demo server running on port ${PORT}`);
-  console.log(`   Comparing: Parallel vs Firecrawl vs Perplexity vs Exa`);
+  console.log(`   Comparing: Parallel vs Firecrawl vs Exa vs OpenAI`);
 });
