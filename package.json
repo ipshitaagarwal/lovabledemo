@@ -1,7 +1,7 @@
 {
   "name": "lovable-search-demo",
   "version": "1.0.0",
-  "description": "Search API comparison demo for Lovable.dev - Parallel vs Firecrawl vs Perplexity",
+  "description": "Search API comparison demo for Lovable.dev - Parallel vs Firecrawl vs Exa vs OpenAI",
   "main": "server/index.js",
   "scripts": {
     "start": "node server/index.js",
