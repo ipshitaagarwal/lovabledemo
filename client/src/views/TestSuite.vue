@@ -153,11 +153,11 @@ export default {
       loadingShared: false,
       sharedData: null,
       queries: [
-        'how to implement dark mode in react',
-        'next.js api routes authentication',
-        'tailwind css grid layout examples',
-        'supabase realtime subscriptions',
-        'react hook form validation'
+        'modern logo design inspiration 2024',
+        'instagram carousel post dimensions',
+        'aesthetic color palette generator',
+        'professional presentation templates',
+        'brand guidelines template examples'
       ],
       results: null,
       running: false,
@@ -206,9 +206,9 @@ export default {
         const res = await fetch('/api/test-suite/generate', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            description: 'Lovable.dev is an AI app builder - generate queries developers would search for',
-            count: 10 
+          body: JSON.stringify({
+            description: 'Canva is a visual design platform - generate queries designers would search for',
+            count: 10
           })
         })
         if (!res.ok) throw new Error('Generation failed')
@@ -315,8 +315,8 @@ export default {
 .loading-spinner {
   width: 48px;
   height: 48px;
-  border: 3px solid rgba(255, 56, 92, 0.2);
-  border-top-color: #FF385C;
+  border: 3px solid rgba(0, 196, 204, 0.2);
+  border-top-color: #00C4CC;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 20px;
@@ -373,13 +373,13 @@ export default {
 }
 
 .btn-run {
-  background: linear-gradient(135deg, #FF385C, #EC4899);
+  background: linear-gradient(135deg, #00C4CC, #7B2FF7);
   color: white;
 }
 
 .btn-run:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(255, 56, 92, 0.4);
+  box-shadow: 0 4px 20px rgba(0, 196, 204, 0.4);
 }
 
 .btn-generate:disabled, .btn-run:disabled {
@@ -429,7 +429,7 @@ export default {
   padding: 10px 18px;
   font-size: 14px;
   font-weight: 600;
-  background: linear-gradient(135deg, #FF385C, #EC4899);
+  background: linear-gradient(135deg, #00C4CC, #7B2FF7);
   border: none;
   border-radius: 10px;
   color: white;
@@ -518,7 +518,7 @@ export default {
 }
 
 .query-item input:focus {
-  border-color: rgba(255, 56, 92, 0.5);
+  border-color: rgba(0, 196, 204, 0.5);
 }
 
 .btn-remove {
@@ -589,7 +589,7 @@ export default {
   padding: 8px 14px;
   font-size: 12px;
   font-weight: 600;
-  background: linear-gradient(135deg, #FF385C, #EC4899);
+  background: linear-gradient(135deg, #00C4CC, #7B2FF7);
   border: none;
   border-radius: 6px;
   color: white;

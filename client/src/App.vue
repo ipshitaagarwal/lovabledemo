@@ -5,18 +5,20 @@
         <div class="logo-section">
           <div class="logo">
             <svg width="32" height="32" viewBox="0 0 100 100" fill="none">
-              <rect width="100" height="100" rx="20" fill="url(#lovable-gradient)"/>
-              <path d="M50 25C38 25 30 35 30 45C30 60 50 75 50 75C50 75 70 60 70 45C70 35 62 25 50 25Z" fill="white"/>
+              <rect width="100" height="100" rx="20" fill="url(#canva-gradient)"/>
+              <path d="M30 50 L45 35 L45 45 L70 45 L70 55 L45 55 L45 65 Z" fill="white"/>
+              <circle cx="65" cy="35" r="8" fill="white"/>
               <defs>
-                <linearGradient id="lovable-gradient" x1="0" y1="0" x2="100" y2="100">
-                  <stop offset="0%" stop-color="#FF385C"/>
-                  <stop offset="100%" stop-color="#EC4899"/>
+                <linearGradient id="canva-gradient" x1="0" y1="0" x2="100" y2="100">
+                  <stop offset="0%" stop-color="#00C4CC"/>
+                  <stop offset="50%" stop-color="#7B2FF7"/>
+                  <stop offset="100%" stop-color="#FF6F61"/>
                 </linearGradient>
               </defs>
             </svg>
           </div>
           <div class="brand">
-            <span class="brand-name">Lovable</span>
+            <span class="brand-name">Canva</span>
             <span class="brand-sub">Search API Comparison</span>
           </div>
         </div>
@@ -33,7 +35,7 @@
     </main>
 
     <footer class="footer">
-      <p>Comparing <strong>Parallel</strong> vs <strong>Firecrawl</strong> vs <strong>Exa</strong> for Lovable.dev</p>
+      <p>Comparing <strong>Parallel</strong> vs <strong>Firecrawl</strong> vs <strong>Exa</strong> for Canva</p>
     </footer>
   </div>
 </template>
@@ -89,7 +91,7 @@ export default {
 .brand-name {
   font-size: 18px;
   font-weight: 700;
-  background: linear-gradient(135deg, #FF385C, #EC4899);
+  background: linear-gradient(135deg, #00C4CC, #7B2FF7);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -122,8 +124,8 @@ export default {
 }
 
 .nav-link.router-link-active {
-  color: #FF385C;
-  background: rgba(255, 56, 92, 0.1);
+  color: #00C4CC;
+  background: rgba(0, 196, 204, 0.1);
 }
 
 .main {
