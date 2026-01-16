@@ -58,27 +58,27 @@
         <div class="criteria-card">
           <div class="criteria-icon">🎯</div>
           <h3>Relevance</h3>
-          <p>How well do results match what a developer building apps would need?</p>
+          <p>How well do results match what a designer creating visual content would need?</p>
         </div>
         <div class="criteria-card">
           <div class="criteria-icon">🕐</div>
           <h3>Freshness</h3>
-          <p>Are results up-to-date with latest versions and practices?</p>
+          <p>Are results up-to-date with latest design trends and practices?</p>
         </div>
         <div class="criteria-card">
           <div class="criteria-icon">⚡</div>
           <h3>Actionability</h3>
-          <p>Can the results directly help generate working code?</p>
+          <p>Can the results directly help create better designs or provide usable assets?</p>
         </div>
         <div class="criteria-card">
           <div class="criteria-icon">🏛️</div>
           <h3>Source Quality</h3>
-          <p>Are sources authoritative (official docs, reputable tutorials)?</p>
+          <p>Are sources authoritative (design blogs, brand guides, reputable platforms)?</p>
         </div>
         <div class="criteria-card">
           <div class="criteria-icon">📚</div>
           <h3>Coverage</h3>
-          <p>Do results cover the topic comprehensively?</p>
+          <p>Do results cover the topic comprehensively with visual examples?</p>
         </div>
       </div>
     </section>
@@ -248,8 +248,8 @@ async function searchExa(query, numResults = 10) {
       judgePrompt: `// GPT-4o evaluates ALL providers using identical criteria
 // No provider-specific weighting or bias
 
-const prompt = \`You are an expert evaluator comparing search API results 
-for an AI-powered app builder called Lovable.dev.
+const prompt = \`You are an expert evaluator comparing search API results
+for Canva, the visual design platform.
 
 **Query:** "\${query}"
 
@@ -263,13 +263,13 @@ for an AI-powered app builder called Lovable.dev.
 \${JSON.stringify(exaResults?.results?.slice(0, 5))}
 
 **Evaluation Criteria (0-10 each, same for ALL providers):**
-1. Relevance - Match to developer needs
-2. Freshness - Up-to-date with latest versions
-3. Actionability - Helps generate working code
-4. Source Quality - Authoritative sources
+1. Relevance - Match to designer needs
+2. Freshness - Up-to-date with latest design trends
+3. Actionability - Helps create better designs
+4. Source Quality - Authoritative design sources
 5. Coverage - Comprehensive topic coverage
 
-Return JSON with scores for each provider and declare winner 
+Return JSON with scores for each provider and declare winner
 based purely on total score.\`;`
     }
   },
@@ -364,9 +364,9 @@ h2 {
 }
 
 .tab-btn.active {
-  background: rgba(255, 56, 92, 0.15);
-  border-color: rgba(255, 56, 92, 0.4);
-  color: #FF385C;
+  background: rgba(0, 196, 204, 0.15);
+  border-color: rgba(0, 196, 204, 0.4);
+  color: #00C4CC;
 }
 
 .code-block {
@@ -486,7 +486,7 @@ h2 {
   justify-content: center;
   font-size: 16px;
   font-weight: 700;
-  background: linear-gradient(135deg, #FF385C, #EC4899);
+  background: linear-gradient(135deg, #00C4CC, #7B2FF7);
   border-radius: 50%;
   color: white;
   flex-shrink: 0;

@@ -19,9 +19,9 @@
 
     <!-- Context Banner -->
     <div v-if="!isSharedView" class="context-banner">
-      <div class="context-icon">💝</div>
+      <div class="context-icon">🎨</div>
       <div class="context-text">
-        <strong>Scenario:</strong> A Lovable user is building an app and needs to search for technical documentation, code examples, or implementation guides.
+        <strong>Scenario:</strong> A Canva user is creating designs and needs to search for design inspiration, templates, tutorials, stock assets, or creative techniques.
       </div>
     </div>
 
@@ -37,7 +37,7 @@
         <input
           v-model="query"
           type="text"
-          placeholder="What would a Lovable user search for? Try: 'how to add stripe payments in react'"
+          placeholder="What would a Canva user search for? Try: 'minimalist logo design trends 2024'"
           @keyup.enter="runSearch"
           :disabled="loading"
         />
@@ -50,7 +50,7 @@
 
     <!-- Example Queries -->
     <div v-if="!isSharedView && !results" class="example-queries">
-      <span class="example-label">Try these developer queries:</span>
+      <span class="example-label">Try these design queries:</span>
       <button v-for="example in exampleQueries" :key="example" @click="setQuery(example)" class="example-btn">
         {{ example }}
       </button>
@@ -235,14 +235,14 @@ export default {
       shareUrl: null,
       copied: false,
       exampleQueries: [
-        "how to add stripe payments in react",
-        "next.js server actions tutorial",
-        "tailwind css responsive navbar",
-        "supabase auth with react",
-        "shadcn ui dialog component",
-        "vercel deployment best practices",
-        "react query vs swr comparison",
-        "typescript generics explained"
+        "minimalist logo design trends 2024",
+        "instagram story templates aesthetic",
+        "color palette generator pastel",
+        "brand identity design guidelines",
+        "social media post dimensions guide",
+        "typography pairing recommendations",
+        "free stock photos high quality",
+        "presentation design best practices"
       ]
     }
   },
@@ -397,8 +397,8 @@ export default {
 .loading-spinner {
   width: 48px;
   height: 48px;
-  border: 3px solid rgba(255, 56, 92, 0.2);
-  border-top-color: #FF385C;
+  border: 3px solid rgba(0, 196, 204, 0.2);
+  border-top-color: #00C4CC;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 20px;
@@ -436,7 +436,7 @@ export default {
   padding: 10px 18px;
   font-size: 14px;
   font-weight: 600;
-  background: linear-gradient(135deg, #FF385C, #EC4899);
+  background: linear-gradient(135deg, #00C4CC, #7B2FF7);
   border: none;
   border-radius: 10px;
   color: white;
@@ -446,7 +446,7 @@ export default {
 
 .btn-new-query:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(255, 56, 92, 0.4);
+  box-shadow: 0 4px 20px rgba(0, 196, 204, 0.4);
 }
 
 .context-banner {
@@ -454,8 +454,8 @@ export default {
   align-items: center;
   gap: 14px;
   padding: 16px 20px;
-  background: linear-gradient(135deg, rgba(255, 56, 92, 0.1), rgba(236, 72, 153, 0.05));
-  border: 1px solid rgba(255, 56, 92, 0.2);
+  background: linear-gradient(135deg, rgba(0, 196, 204, 0.1), rgba(123, 47, 247, 0.05));
+  border: 1px solid rgba(0, 196, 204, 0.2);
   border-radius: 12px;
   margin-bottom: 20px;
 }
@@ -485,8 +485,8 @@ export default {
 }
 
 .search-box:focus-within {
-  border-color: rgba(255, 56, 92, 0.5);
-  box-shadow: 0 0 0 4px rgba(255, 56, 92, 0.1);
+  border-color: rgba(0, 196, 204, 0.5);
+  box-shadow: 0 0 0 4px rgba(0, 196, 204, 0.1);
 }
 
 .search-icon {
@@ -515,7 +515,7 @@ export default {
   padding: 14px 28px;
   font-size: 15px;
   font-weight: 600;
-  background: linear-gradient(135deg, #FF385C, #EC4899);
+  background: linear-gradient(135deg, #00C4CC, #7B2FF7);
   color: white;
   border: none;
   border-radius: 12px;
@@ -526,7 +526,7 @@ export default {
 
 .search-btn:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(255, 56, 92, 0.4);
+  box-shadow: 0 4px 20px rgba(0, 196, 204, 0.4);
 }
 
 .search-btn:disabled {
@@ -574,9 +574,9 @@ export default {
 }
 
 .example-btn:hover {
-  background: rgba(255, 56, 92, 0.1);
-  border-color: rgba(255, 56, 92, 0.3);
-  color: #FF385C;
+  background: rgba(0, 196, 204, 0.1);
+  border-color: rgba(0, 196, 204, 0.3);
+  color: #00C4CC;
 }
 
 .error-banner {
@@ -698,7 +698,7 @@ export default {
   padding: 8px 14px;
   font-size: 12px;
   font-weight: 600;
-  background: linear-gradient(135deg, #FF385C, #EC4899);
+  background: linear-gradient(135deg, #00C4CC, #7B2FF7);
   border: none;
   border-radius: 6px;
   color: white;

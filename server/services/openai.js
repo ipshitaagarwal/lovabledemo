@@ -7,15 +7,16 @@ async function judgeResults(query, parallelResults, firecrawlResults, exaResults
     throw new Error('OPENAI_API_KEY not configured');
   }
 
-  const prompt = `You are an expert evaluator comparing search API results for an AI-powered app builder called Lovable.dev.
+  const prompt = `You are an expert evaluator comparing search API results for Canva, the visual design and content creation platform.
 
-Lovable.dev helps users build apps through natural language prompts. Their search needs include:
-- Technical documentation lookups
-- Code examples and snippets
-- API references
-- Framework guides (React, Vue, Next.js, etc.)
-- UI component libraries
-- Design patterns and best practices
+Canva helps users create stunning visual content including social media posts, presentations, logos, marketing materials, and more. Their search needs include:
+- Design inspiration and trends
+- Template recommendations
+- Color palettes and typography guides
+- Stock photos, illustrations, and graphics
+- Brand identity and marketing best practices
+- Tutorial content for design techniques
+- Print and digital media specifications
 
 **Query:** "${query}"
 
@@ -28,12 +29,12 @@ ${JSON.stringify(firecrawlResults?.results?.slice(0, 5) || [], null, 2)}
 **Exa Results:**
 ${JSON.stringify(exaResults?.results?.slice(0, 5) || [], null, 2)}
 
-**Evaluation Criteria for App Building Context:**
-1. **Relevance** (0-10): How well do results match what a developer building apps would need?
-2. **Freshness** (0-10): Are results up-to-date with latest versions/practices?
-3. **Actionability** (0-10): Can the results directly help generate working code?
-4. **Source Quality** (0-10): Are sources authoritative (official docs, reputable tutorials)?
-5. **Coverage** (0-10): Do results cover the topic comprehensively?
+**Evaluation Criteria for Visual Design Context:**
+1. **Relevance** (0-10): How well do results match what a designer creating visual content would need?
+2. **Freshness** (0-10): Are results up-to-date with latest design trends and practices?
+3. **Actionability** (0-10): Can the results directly help create better designs or provide usable assets?
+4. **Source Quality** (0-10): Are sources authoritative (design blogs, official brand guides, reputable platforms)?
+5. **Coverage** (0-10): Do results cover the topic comprehensively with visual examples?
 
 Provide your evaluation as JSON:
 {
@@ -56,7 +57,7 @@ Provide your evaluation as JSON:
     "weaknesses": ["..."]
   },
   "winner": "parallel" | "firecrawl" | "exa" | "tie",
-  "recommendation": "Brief recommendation for Lovable.dev based on this query",
+  "recommendation": "Brief recommendation for Canva based on this query",
   "reasoning": "2-3 sentence explanation of the winner choice"
 }`;
 
@@ -99,29 +100,29 @@ Provide your evaluation as JSON:
 
 async function generateTestSuite(description, count = 10) {
   const apiKey = process.env.OPENAI_API_KEY;
-  
+
   if (!apiKey) {
     throw new Error('OPENAI_API_KEY not configured');
   }
 
-  const prompt = `Generate ${count} realistic search queries that developers using Lovable.dev (an AI app builder) would ask.
+  const prompt = `Generate ${count} realistic search queries that designers using Canva (a visual design platform) would ask.
 
-Context: ${description || 'Lovable.dev is an AI-powered platform that lets users build full-stack web applications through natural language prompts. Users describe what they want, and Lovable generates the code.'}
+Context: ${description || 'Canva is a visual design platform that helps users create stunning graphics, presentations, social media posts, marketing materials, logos, and more. Users need inspiration, templates, assets, and design guidance.'}
 
 The queries should cover scenarios like:
-- Looking up React/Next.js/Vue component patterns
-- Finding API documentation
-- Searching for UI library components (Tailwind, shadcn, etc.)
-- Database integration guides
-- Authentication implementation
-- Deployment and hosting solutions
-- Performance optimization techniques
-- Error debugging and troubleshooting
+- Design inspiration and trends (logos, social media, presentations)
+- Template discovery for specific use cases
+- Color palette and typography recommendations
+- Stock photos, illustrations, and graphic elements
+- Brand identity and style guide creation
+- Social media dimensions and specifications
+- Print design requirements (business cards, flyers, posters)
+- Marketing and advertising design best practices
 
 Return as JSON array of strings:
 ["query 1", "query 2", ...]
 
-Make queries specific and realistic - what a developer would actually type.`;
+Make queries specific and realistic - what a designer would actually type.`;
 
   const response = await fetch(OPENAI_API_URL, {
     method: 'POST',
