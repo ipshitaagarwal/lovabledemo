@@ -1,12 +1,13 @@
 {
-  "name": "lovable-search-demo",
+  "name": "notion-crm-enrichment-worker",
   "version": "1.0.0",
-  "description": "Search API comparison demo for Lovable.dev - Parallel vs Firecrawl vs Exa vs OpenAI",
+  "description": "CRM enrichment Worker for Notion powered by Parallel Task API",
   "main": "server/index.js",
   "scripts": {
     "start": "node server/index.js",
     "build": "cd client && npm install && npm run build",
-    "dev": "node server/index.js"
+    "dev": "node server/index.js",
+    "worker": "node server/worker.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
